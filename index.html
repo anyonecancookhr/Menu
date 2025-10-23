@@ -1,0 +1,457 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Purple Oven</title>
+    <!-- Load Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Configure Tailwind with Royal Purple theme -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'royal-purple': {
+                            'DEFAULT': '#5A1B6B', // A deep purple from the logo
+                            'light': '#F3E8FF', // A very light purple for backgrounds
+                            'dark': '#4A067A',
+                            'text': '#3D0F4C',
+                        }
+                    },
+                    fontFamily: {
+                        'sans': ['Inter', 'sans-serif'],
+                        'serif': ['Georgia', 'serif'] // An elegant serif font for headings
+                    }
+                }
+            }
+        }
+    </script>
+    
+    <!-- Custom styles for page navigation -->
+    <style>
+        /* Hide pages by default */
+        .page {
+            display: none;
+        }
+        /* Show the active page */
+        .page.active {
+            display: block;
+        }
+        /* Style for the active navigation button */
+        .nav-btn.active-nav {
+            background-color: #4A067A; /* royal-purple-dark */
+            font-weight: 700;
+            box-shadow: inset 0 2px 4px rgba(0,0,0,0.2);
+        }
+        
+        /* Simple transition for page fade-in */
+        .page.active {
+            animation: fadeIn 0.5s ease-in-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        
+        /* Styles for the new accordion */
+        .accordion-trigger {
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+        .accordion-arrow {
+            transition: transform 0.2s ease-in-out;
+            font-size: 0.8em; /* Make arrow a bit smaller */
+        }
+        .active-accordion .accordion-arrow {
+            transform: rotate(180deg);
+        }
+    </style>
+</head>
+<body class="bg-royal-purple-light font-sans text-gray-800 min-h-screen">
+
+    <!-- Header & Navigation -->
+    <header class="bg-royal-purple text-white p-6 shadow-lg sticky top-0 z-10">
+        <div class="container mx-auto max-w-5xl">
+            <!-- Logo Placeholder -->
+            <!-- Note: The user's logo '01 The Purple Oven Corporation Logo.jpg' would be placed here -->
+            <div class="text-center md:text-left">
+                <!-- Added image tag for the logo -->
+                <img src="01 The Purple Oven Corporation Logo.jpg" alt="Purple Oven Logo" class="h-20 w-auto mx-auto md:mx-0 mb-2 rounded-full">
+                <h1 class="text-4xl font-serif font-bold">Purple Oven</h1>
+                <!-- Removed Bakeshop & Patisserie line -->
+            </div>
+            
+            <!-- Navigation Buttons -->
+            <nav class="mt-4 flex justify-center md:justify-start space-x-2">
+                <button id="nav-menu" class="nav-btn active-nav px-4 py-2 rounded-lg font-semibold text-white transition-colors duration-200 hover:bg-royal-purple-dark/70">Menu</button>
+                <button id="nav-orders" class="nav-btn px-4 py-2 rounded-lg font-semibold text-white transition-colors duration-200 hover:bg-royal-purple-dark/70">Advance Orders</button>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Main Content Area -->
+    <main class="container mx-auto max-w-5xl p-4 md:p-8">
+
+        <!-- === PAGE 1: MENU === -->
+        <section id="page-menu" class="page active">
+            <h2 class="text-3xl font-serif font-bold text-royal-purple-text mb-6 pb-2 border-b-2 border-royal-purple/30">Our Menu</h2>
+            
+            <!-- Menu Category: Light Cakes -->
+            <div class="mb-8">
+                <h3 class="text-2xl font-serif text-royal-purple-dark mb-4">Light Cakes</h3>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <!-- Menu Item -->
+                    <div class="bg-white p-4 rounded-lg shadow-md transition-shadow duration-300 hover:shadow-xl">
+                        <h4 class="text-xl font-semibold font-serif text-royal-purple">Placeholder Light Cake</h4>
+                        <p class="text-gray-600 mt-1">A delicious description of this menu item goes here.</p>
+                        <p class="text-lg font-semibold text-royal-purple-dark mt-2">Price: ₱0.00</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Menu Category: Chocolate Cakes -->
+            <div class="mb-8">
+                <h3 class="text-2xl font-serif text-royal-purple-dark mb-4">Chocolate Cakes</h3>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <!-- Menu Item -->
+                    <div class="bg-white p-4 rounded-lg shadow-md transition-shadow duration-300 hover:shadow-xl">
+                        <h4 class="text-xl font-semibold font-serif text-royal-purple">Placeholder Chocolate Cake</h4>
+                        <p class="text-gray-600 mt-1">A delicious description of this menu item goes here.</p>
+                        <p class="text-lg font-semibold text-royal-purple-dark mt-2">Price: ₱0.00</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Menu Category: Bread -->
+            <div class="mb-8">
+                <h3 class="text-2xl font-serif text-royal-purple-dark mb-4">Bread</h3>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <!-- Menu Item -->
+                    <div class="bg-white p-4 rounded-lg shadow-md transition-shadow duration-300 hover:shadow-xl">
+                        <h4 class="text-xl font-semibold font-serif text-royal-purple">Placeholder Bread</h4>
+                        <p class="text-gray-600 mt-1">A delicious description of this menu item goes here.</a-p>
+                        <p class="text-lg font-semibold text-royal-purple-dark mt-2">Price: ₱0.00</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Menu Category: Artisan -->
+            <div class="mb-8">
+                <h3 class="text-2xl font-serif text-royal-purple-dark mb-4">Artisan</h3>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <!-- Menu Item -->
+                    <div class="bg-white p-4 rounded-lg shadow-md transition-shadow duration-300 hover:shadow-xl">
+                        <h4 class="text-xl font-semibold font-serif text-royal-purple">Placeholder Artisan Item</h4>
+                        <p class="text-gray-600 mt-1">A delicious description of this menu item goes here.</p>
+                        <p class="text-lg font-semibold text-royal-purple-dark mt-2">Price: ₱0.00</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Menu Category: Pies -->
+            <div class="mb-8">
+                <h3 class="text-2xl font-serif text-royal-purple-dark mb-4">Pies</h3>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <!-- Menu Item -->
+                    <div class="bg-white p-4 rounded-lg shadow-md transition-shadow duration-300 hover:shadow-xl">
+                        <h4 class="text-xl font-semibold font-serif text-royal-purple">Placeholder Pie</h4>
+                        <p class="text-gray-600 mt-1">A delicious description of this menu item goes here.</p>
+                        <p class="text-lg font-semibold text-royal-purple-dark mt-2">Price: ₱0.00</p>
+                    </div>
+                </div>
+            </div>
+
+        </section>
+
+        <!-- === PAGE 2: ADVANCE ORDERS === -->
+        <section id="page-orders" class="page">
+            <h2 class="text-3xl font-serif font-bold text-royal-purple-text mb-6 pb-2 border-b-2 border-royal-purple/30">Advance Orders</h2>
+
+            <!-- Office Hours -->
+            <div class="bg-white p-6 rounded-lg shadow-md mb-6 border-l-4 border-royal-purple">
+                <h3 class="text-2xl font-serif font-semibold text-royal-purple-dark">Office Hours</h3>
+                <p class="text-lg text-gray-700 mt-2">Our team is available to confirm your advance orders daily from <span class="font-bold">8:00 AM to 7:00 PM</span>.</p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <!-- Option 1: Call -->
+                <div class="bg-white p-6 rounded-lg shadow-md">
+                    <h3 class="text-2xl font-serif font-semibold text-royal-purple-dark mb-3">Option 1: Call Us</h3>
+                    <p class="text-gray-700 mb-4">For immediate assistance or to discuss your order, please give us a call.</p>
+                    <a href="#" class="inline-block bg-royal-purple text-white font-bold py-2 px-5 rounded-lg transition-transform duration-200 hover:scale-105">
+                        Call: (Phone Number Here)
+                    </a>
+                </div>
+
+                <!-- Option 2: Email Form -->
+                <div class="bg-white p-6 rounded-lg shadow-md">
+                    <h3 class="text-2xl font-serif font-semibold text-royal-purple-dark mb-3">Option 2: Send an Inquiry</h3>
+                    <p class="text-gray-700 mb-4">Fill out the form below to send us an order inquiry. We will contact you to confirm details.</p>
+                    
+                    <form id="order-form">
+                        <!-- Added Email and Phone Fields -->
+                        <div class="mb-4">
+                            <label for="email" class="block text-sm font-bold text-gray-700 mb-2">Email:</label>
+                            <input type="email" id="email" placeholder="you@example.com" required class="w-full rounded border border-gray-300 p-2 focus:ring-royal-purple focus:border-royal-purple">
+                        </div>
+                        <div class="mb-4">
+                            <label for="phone" class="block text-sm font-bold text-gray-700 mb-2">Phone Number:</label>
+                            <input type="tel" id="phone" placeholder="09171234567" required class="w-full rounded border border-gray-300 p-2 focus:ring-royal-purple focus:border-royal-purple">
+                        </div>
+
+                        <!-- Item Selection -->
+                        <div class="mb-4">
+                            <label class="block text-sm font-bold text-gray-700 mb-2">Select Items:</label>
+                            <!-- Updated item list to be a scalable accordion -->
+                            <div class="border rounded-lg overflow-hidden bg-white shadow-sm">
+
+                                <!-- Category: Light Cakes -->
+                                <div>
+                                    <!-- Accordion Trigger -->
+                                    <button type="button" class="accordion-trigger w-full flex justify-between items-center p-3 text-left hover:bg-royal-purple-light/30 border-b">
+                                        <h5 class="text-md font-semibold text-royal-purple-dark">Light Cakes</h5>
+                                        <span class="accordion-arrow text-royal-purple-dark">▼</span>
+                                    </button>
+                                    <!-- Accordion Content (hidden by default) -->
+                                    <div class="accordion-content hidden p-3 space-y-2 border-b">
+                                        <!-- Item 1 -->
+                                        <div class="flex items-center justify-between pl-2">
+                                            <div class="flex items-center">
+                                                <input type="checkbox" id="item_light_cake_1" class="h-4 w-4 text-royal-purple rounded border-gray-300 focus:ring-royal-purple">
+                                                <label for="item_light_cake_1" class="ml-2 text-gray-700">Placeholder Light Cake 1</label>
+                                            </div>
+                                            <input type="number" min="1" placeholder="Qty" class="w-20 rounded border border-gray-300 p-1 text-sm focus:ring-royal-purple focus:border-royal-purple">
+                                        </div>
+                                        <!-- Item 2 -->
+                                        <div class="flex items-center justify-between pl-2">
+                                            <div class="flex items-center">
+                                                <input type="checkbox" id="item_light_cake_2" class="h-4 w-4 text-royal-purple rounded border-gray-300 focus:ring-royal-purple">
+                                                <label for="item_light_cake_2" class="ml-2 text-gray-700">Placeholder Light Cake 2</label>
+                                            </div>
+                                            <input type="number" min="1" placeholder="Qty" class="w-20 rounded border border-gray-300 p-1 text-sm focus:ring-royal-purple focus:border-royal-purple">
+                                        </div>
+                                        <!-- You can add 30+ more light cakes here -->
+                                    </div>
+                                </div>
+
+                                <!-- Category: Chocolate Cakes -->
+                                <div>
+                                    <!-- Accordion Trigger -->
+                                    <button type="button" class="accordion-trigger w-full flex justify-between items-center p-3 text-left hover:bg-royal-purple-light/30 border-b">
+                                        <h5 class="text-md font-semibold text-royal-purple-dark">Chocolate Cakes</h5>
+                                        <span class="accordion-arrow text-royal-purple-dark">▼</span>
+                                    </button>
+                                    <!-- Accordion Content (hidden by default) -->
+                                    <div class="accordion-content hidden p-3 space-y-2 border-b">
+                                        <!-- Item 1 -->
+                                        <div class="flex items-center justify-between pl-2">
+                                            <div class="flex items-center">
+                                                <input type="checkbox" id="item_choco_cake_1" class="h-4 w-4 text-royal-purple rounded border-gray-300 focus:ring-royal-purple">
+                                                <label for="item_choco_cake_1" class="ml-2 text-gray-700">Placeholder Choco Cake 1</label>
+                                            </div>
+                                            <input type="number" min="1" placeholder="Qty" class="w-20 rounded border border-gray-300 p-1 text-sm focus:ring-royal-purple focus:border-royal-purple">
+                                        </div>
+                                        <!-- You can add 30+ more choco cakes here -->
+                                    </div>
+                                </div>
+                                
+                                <!-- Category: Bread -->
+                                <div>
+                                    <!-- Accordion Trigger -->
+                                    <button type="button" class="accordion-trigger w-full flex justify-between items-center p-3 text-left hover:bg-royal-purple-light/30 border-b">
+                                        <h5 class="text-md font-semibold text-royal-purple-dark">Bread</h5>
+                                        <span class="accordion-arrow text-royal-purple-dark">▼</span>
+                                    </button>
+                                    <!-- Accordion Content (hidden by default) -->
+                                    <div class="accordion-content hidden p-3 space-y-2 border-b">
+                                        <!-- Item 1 -->
+                                        <div class="flex items-center justify-between pl-2">
+                                            <div class="flex items-center">
+                                                <input type="checkbox" id="item_bread_1" class="h-4 w-4 text-royal-purple rounded border-gray-300 focus:ring-royal-purple">
+                                                <label for="item_bread_1" class="ml-2 text-gray-700">Placeholder Bread 1</label>
+                                            </div>
+                                            <input type="number" min="1" placeholder="Qty" class="w-20 rounded border border-gray-300 p-1 text-sm focus:ring-royal-purple focus:border-royal-purple">
+                                        </div>
+                                        <!-- You can add 30+ more bread items here -->
+                                    </div>
+                                </div>
+
+                                <!-- Category: Artisan -->
+                                <div>
+                                    <!-- Accordion Trigger -->
+                                    <button type="button" class="accordion-trigger w-full flex justify-between items-center p-3 text-left hover:bg-royal-purple-light/30 border-b">
+                                        <h5 class="text-md font-semibold text-royal-purple-dark">Artisan</h5>
+                                        <span class="accordion-arrow text-royal-purple-dark">▼</span>
+                                    </button>
+                                    <!-- Accordion Content (hidden by default) -->
+                                    <div class="accordion-content hidden p-3 space-y-2 border-b">
+                                        <!-- Item 1 -->
+                                        <div class="flex items-center justify-between pl-2">
+                                            <div class="flex items-center">
+                                                <input type="checkbox" id="item_artisan_1" class="h-4 w-4 text-royal-purple rounded border-gray-300 focus:ring-royal-purple">
+                                                <label for="item_artisan_1" class="ml-2 text-gray-700">Placeholder Artisan 1</label>
+                                            </div>
+                                            <input type="number" min="1" placeholder="Qty" class="w-20 rounded border border-gray-300 p-1 text-sm focus:ring-royal-purple focus:border-royal-purple">
+                                        </div>
+                                        <!-- You can add 30+ more artisan items here -->
+                                    </div>
+                                </div>
+                                
+                                <!-- Category: Pies -->
+                                <div>
+                                    <!-- Accordion Trigger -->
+                                    <button type="button" class="accordion-trigger w-full flex justify-between items-center p-3 text-left hover:bg-royal-purple-light/30"> <!-- No border-b on last item -->
+                                        <h5 class="text-md font-semibold text-royal-purple-dark">Pies</h5>
+                                        <span class="accordion-arrow text-royal-purple-dark">▼</span>
+                                    </button>
+                                    <!-- Accordion Content (hidden by default) -->
+                                    <div class="accordion-content hidden p-3 space-y-2">
+                                        <!-- Item 1 -->
+                                        <div class="flex items-center justify-between pl-2">
+                                            <div class="flex items-center">
+                                                <input type="checkbox" id="item_pie_1" class="h-4 w-4 text-royal-purple rounded border-gray-300 focus:ring-royal-purple">
+                                                <label for="item_pie_1" class="ml-2 text-gray-700">Placeholder Pie 1</label>
+                                            </div>
+                                            <input type="number" min="1" placeholder="Qty" class="w-20 rounded border border-gray-300 p-1 text-sm focus:ring-royal-purple focus:border-royal-purple">
+                                        </div>
+                                        <!-- You can add 30+ more pies here -->
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+
+                        <!-- Order Type: Pick Up / Delivery -->
+                        <div class="mb-4">
+                            <label class="block text-sm font-bold text-gray-700 mb-2">Order Type:</label>
+                            <div class="flex space-x-4">
+                                <div class="flex items-center">
+                                    <input type="radio" name="orderType" id="pickup" value="pickup" class="h-4 w-4 text-royal-purple focus:ring-royal-purple">
+                                    <label for="pickup" class="ml-2 text-gray-700">Pick Up</label>
+                                </div>
+                                <div class="flex items-center">
+                                    <input type="radio" name="orderType" id="delivery" value="delivery" class="h-4 w-4 text-royal-purple focus:ring-royal-purple">
+                                    <label for="delivery" class="ml-2 text-gray-700">Delivery</label>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Pick Up Location (Conditional) -->
+                        <div id="pickup-location" class="mb-4 hidden">
+                            <label for="location" class="block text-sm font-bold text-gray-700 mb-2">Pick Up Location:</label>
+                            <select id="location" class="w-full rounded border border-gray-300 p-2 focus:ring-royal-purple focus:border-royal-purple">
+                                <option>Purple Oven Stress</option>
+                                <option>(Other locations will go here)</option>
+                            </select>
+                        </div>
+                        
+                        <!-- Disclaimer -->
+                        <div class="mt-6 bg-red-100 border-l-4 border-red-600 text-red-800 p-4 rounded-lg">
+                            <p class="font-bold">Important Notice:</p>
+                            <p class="text-sm">This is an inquiry form. No final price is set, and no payment will be collected. Our office will contact you to confirm your order and provide final details.</p>
+                        </div>
+
+                        <button type="submit" class="mt-6 w-full bg-royal-purple text-white font-bold py-2 px-4 rounded-lg transition-transform duration-200 hover:scale-105 hover:bg-royal-purple-dark">
+                            Send Inquiry to (Email Here)
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="text-center p-6 mt-12 text-gray-500 text-sm border-t border-gray-300">
+        © 2025 Purple Oven. All rights reserved. (Placeholder)
+    </footer>
+
+    <!-- JavaScript for Page Navigation and Form Logic -->
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // Navigation Elements
+            const navMenu = document.getElementById('nav-menu');
+            const navOrders = document.getElementById('nav-orders');
+            const navButtons = [navMenu, navOrders];
+            
+            // Page Elements
+            const pageMenu = document.getElementById('page-menu');
+            const pageOrders = document.getElementById('page-orders');
+            
+            // Form Elements
+            const radioPickup = document.getElementById('pickup');
+            const radioDelivery = document.getElementById('delivery');
+            const pickupLocationDiv = document.getElementById('pickup-location');
+            const orderForm = document.getElementById('order-form');
+
+            // Function to switch active page
+            function showPage(pageId) {
+                // Hide all pages
+                document.querySelectorAll('.page').forEach(page => {
+                    page.classList.remove('active');
+                });
+                // Remove active class from all nav buttons
+                navButtons.forEach(btn => {
+                    btn.classList.remove('active-nav');
+                });
+                
+                // Show the target page
+                if (pageId === 'menu') {
+                    pageMenu.classList.add('active');
+                    navMenu.classList.add('active-nav');
+                } else if (pageId === 'orders') {
+                    pageOrders.classList.add('active');
+                    navOrders.classList.add('active-nav');
+                }
+            }
+
+            // Navigation Event Listeners
+            navMenu.addEventListener('click', () => showPage('menu'));
+            navOrders.addEventListener('click', () => showPage('orders'));
+
+            // Form Logic for conditional 'Pick Up' location
+            function togglePickupLocation() {
+                if (radioPickup.checked) {
+                    pickupLocationDiv.classList.remove('hidden');
+                } else {
+                    pickupLocationDiv.classList.add('hidden');
+                }
+            }
+            
+            radioPickup.addEventListener('change', togglePickupLocation);
+            radioDelivery.addEventListener('change', togglePickupLocation);
+
+            // Prevent form from actually submitting (it's a placeholder)
+            orderForm.addEventListener('submit', (e) => {
+                e.preventDefault();
+                // We could show a custom message here instead of an alert
+                console.log('Form submission intercepted. This is a placeholder.');
+            });
+
+            // Accordion Logic for Item Selection
+            const accordionTriggers = document.querySelectorAll('.accordion-trigger');
+            accordionTriggers.forEach(trigger => {
+                trigger.addEventListener('click', (e) => {
+                    // Prevent the button from submitting a form if it's somehow inside one
+                    e.preventDefault(); 
+                    
+                    // Toggle active class on the button
+                    trigger.classList.toggle('active-accordion');
+                    
+                    // Find the content and toggle it
+                    const content = trigger.nextElementSibling;
+                    content.classList.toggle('hidden');
+                });
+            });
+
+            // Ensure the default page is shown on load
+            showPage('menu');
+        });
+    </script>
+
+</body>
+</html>
+
