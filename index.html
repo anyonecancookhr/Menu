@@ -1,0 +1,531 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Purple Oven</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'royal-purple': {
+                            'DEFAULT': '#5A1B6B',
+                            'light': '#F3E8FF',
+                            'dark': '#4A067A',
+                            'text': '#3D0F4C',
+                        }
+                    },
+                    fontFamily: {
+                        'sans': ['Inter', 'sans-serif'],
+                        'serif': ['Georgia', 'serif']
+                    }
+                }
+            }
+        }
+    </script>
+    
+    <style>
+        /* Hide pages by default */
+        .page {
+            display: none;
+        }
+        /* Show the active page */
+        .page.active {
+            display: block;
+        }
+        /* Style for the active navigation button */
+        .nav-btn.active-nav {
+            background-color: #4A067A;
+            font-weight: 700;
+            box-shadow: inset 0 2px 4px rgba(0,0,0,0.2);
+        }
+        
+        /* Simple transition for page fade-in */
+        .page.active {
+            animation: fadeIn 0.5s ease-in-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        
+        /* Styles for the new accordion */
+        .accordion-trigger {
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+        .accordion-arrow {
+            transition: transform 0.2s ease-in-out;
+            font-size: 0.8em;
+        }
+        .active-accordion .accordion-arrow {
+            transform: rotate(180deg);
+        }
+        
+        /* Map container style */
+        .map-container {
+            height: 300px;
+            border-radius: 0.5rem;
+            overflow: hidden;
+            margin-top: 1rem;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+    </style>
+    
+    <script src="data/menu.js"></script>
+    <script src="https://maps.googleapis.com/maps/api/js?callback=initMap" async defer></script>
+</head>
+<body class="bg-royal-purple-light font-sans text-gray-800 min-h-screen">
+
+    <header class="bg-royal-purple text-white p-6 shadow-lg sticky top-0 z-10">
+        <div class="container mx-auto max-w-5xl">
+            <div class="text-center md:text-left">
+                <img src="purple_oven_logo.jpg" alt="Purple Oven Logo" class="h-20 w-auto mx-auto md:mx-0 mb-2 rounded-full">
+                <h1 class="text-4xl font-serif font-bold">Purple Oven</h1>
+                </div>
+            
+            <nav class="mt-4 flex justify-center md:justify-start space-x-2">
+                <button id="nav-menu" class="nav-btn active-nav px-4 py-2 rounded-lg font-semibold text-white transition-colors duration-200 hover:bg-royal-purple-dark/70">Menu</button>
+                <button id="nav-orders" class="nav-btn px-4 py-2 rounded-lg font-semibold text-white transition-colors duration-200 hover:bg-royal-purple-dark/70">Advance Orders</button>
+                </nav>
+        </div>
+    </header>
+
+    <main class="container mx-auto max-w-5xl p-4 md:p-8">
+
+        <section id="page-menu" class="page active">
+            <h2 class="text-3xl font-serif font-bold text-royal-purple-text mb-6 pb-2 border-b-2 border-royal-purple/30">Our Menu</h2>
+            
+            <div id="menu-content-container">
+                </div>
+        </section>
+
+        <section id="page-orders" class="page">
+            <h2 class="text-3xl font-serif font-bold text-royal-purple-text mb-6 pb-2 border-b-2 border-royal-purple/30">Advance Orders</h2>
+
+            <div class="bg-white p-6 rounded-lg shadow-md mb-6 border-l-4 border-royal-purple">
+                <h3 class="text-2xl font-serif font-semibold text-royal-purple-dark">Office Hours</h3>
+                <p class="text-lg text-gray-700 mt-2">Our team is available to confirm your advance orders daily from <span class="font-bold">8:00 AM to 7:00 PM</span>.</p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div class="bg-white p-6 rounded-lg shadow-md">
+                    <h3 class="text-2xl font-serif font-semibold text-royal-purple-dark mb-3">Option 1: Call Us</h3>
+                    <p class="text-gray-700 mb-4">For immediate assistance or to discuss your order, please give us a call.</p>
+                    <a href="#" class="inline-block bg-royal-purple text-white font-bold py-2 px-5 rounded-lg transition-transform duration-200 hover:scale-105">
+                        Call: (Phone Number Here)
+                    </a>
+                </div>
+
+                <div class="bg-white p-6 rounded-lg shadow-md">
+                    <h3 class="text-2xl font-serif font-semibold text-royal-purple-dark mb-3">Option 2: Send an Inquiry</h3>
+                    <p class="text-gray-700 mb-4">Fill out the form below to send us an order inquiry. We will contact you to confirm details.</p>
+                    
+                    <form id="order-form">
+                        <div class="mb-4">
+                            <label for="email" class="block text-sm font-bold text-gray-700 mb-2">Email:</label>
+                            <input type="email" id="email" placeholder="you@example.com" required class="w-full rounded border border-gray-300 p-2 focus:ring-royal-purple focus:border-royal-purple">
+                        </div>
+                        <div class="mb-4">
+                            <label for="phone" class="block text-sm font-bold text-gray-700 mb-2">Phone Number:</label>
+                            <input type="tel" id="phone" placeholder="09171234567" required class="w-full rounded border border-gray-300 p-2 focus:ring-royal-purple focus:border-royal-purple">
+                        </div>
+
+                        <div class="mb-4">
+                            <label class="block text-sm font-bold text-gray-700 mb-2">Select Items:</label>
+                            <div id="accordion-container" class="border rounded-lg overflow-hidden bg-white shadow-sm">
+                                </div>
+                        </div>
+                        <div class="mb-4">
+                            <label class="block text-sm font-bold text-gray-700 mb-2">Order Type:</label>
+                            <div class="flex space-x-4">
+                                <div class="flex items-center">
+                                    <input type="radio" name="orderType" id="pickup" value="pickup" class="h-4 w-4 text-royal-purple focus:ring-royal-purple">
+                                    <label for="pickup" class="ml-2 text-gray-700">Pick Up</label>
+                                </div>
+                                <div class="flex items-center">
+                                    <input type="radio" name="orderType" id="delivery" value="delivery" class="h-4 w-4 text-royal-purple focus:ring-royal-purple">
+                                    <label for="delivery" class="ml-2 text-gray-700">Delivery</label>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div id="pickup-location" class="mb-4 hidden">
+                            <label for="location" class="block text-sm font-bold text-gray-700 mb-2">Pick Up Location:</label>
+                            <select id="location" class="w-full rounded border border-gray-300 p-2 focus:ring-royal-purple focus:border-royal-purple">
+                                <option value="" disabled selected>Please select a location...</option>
+                                <option data-lat="14.613327" data-lng="121.066498" value="Temple Drive">Purple Oven at Temple Drive</option>
+                                <option data-lat="14.577909" data-lng="121.056070" value="Portico">Purple Oven at Portico</option>
+                                <option data-lat="14.630002" data-lng="121.033621" value="Scout Rallos">Purple Oven at Scout Rallos</option>
+                                <option data-lat="14.606700" data-lng="121.031500" value="San Juan">Purple Oven at San Juan</option>
+                                <option data-lat="14.549219" data-lng="121.018938" value="San Antonio">Purple Oven at San Antonio</option>
+                                <option data-lat="14.558360" data-lng="121.019488" value="Legazpi Village">Purple Oven at Legazpi Village</option>
+                                <option data-lat="14.417277" data-lng="121.042168" value="Alabang">Purple Oven at Alabang</option>
+                                <option data-lat="14.633400" data-lng="121.034700" value="Sacred Heart">Purple Oven at Sacred Heart</option>
+                                <option data-lat="14.283100" data-lng="121.085300" value="Santa Rosa - Laguna">Purple Oven at Santa Rosa - Laguna</option>
+                            </select>
+                            
+                            <div id="map-canvas" class="map-container hidden"></div>
+                        </div>
+                        
+                        <div id="delivery-details" class="mb-4 hidden space-y-4">
+                            <div>
+                                <label for="address" class="block text-sm font-bold text-gray-700 mb-2">Address:</label>
+                                <textarea id="address" rows="3" placeholder="Street, Barangay, City" class="w-full rounded border border-gray-300 p-2 focus:ring-royal-purple focus:border-royal-purple"></textarea>
+                            </div>
+                            <div>
+                                <label for="landmark" class="block text-sm font-bold text-gray-700 mb-2">Landmark:</label>
+                                <input type="text" id="landmark" placeholder="e.g., Near XYZ Building" class="w-full rounded border border-gray-300 p-2 focus:ring-royal-purple focus:border-royal-purple">
+                            </div>
+                        </div>
+                        
+                        <div class="mt-6 bg-red-100 border-l-4 border-red-600 text-red-800 p-4 rounded-lg">
+                            <p class="font-bold">Important Notice:</p>
+                            <p class="text-sm">This is an inquiry form. No final price is set, and no payment will be collected. Our office will contact you to confirm your order and provide final details.</p>
+                        </div>
+
+                        <button type="submit" class="mt-6 w-full bg-royal-purple text-white font-bold py-2 px-4 rounded-lg transition-transform duration-200 hover:scale-105 hover:bg-royal-purple-dark">
+                            Send Inquiry to orderonline@purpleoven.com.ph
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <footer class="text-center p-6 mt-12 bg-white text-gray-700 shadow-inner border-t border-gray-300">
+        <div class="container mx-auto max-w-5xl">
+            <h3 class="text-xl font-serif font-semibold text-royal-purple-dark mb-4">Our Locations</h3>
+            <div class="grid grid-cols-2 md:grid-cols-3 gap-x-4 gap-y-2 text-sm">
+                <a href="https://maps.google.com/?q=Purple+Oven+at+Temple+Drive" target="_blank" rel="noopener noreferrer" class="hover:text-royal-purple hover:underline">Temple Drive</a>
+                <a href="https://maps.google.com/?q=Purple+Oven+at+Portico" target="_blank" rel="noopener noreferrer" class="hover:text-royal-purple hover:underline">Portico</a>
+                <a href="https://maps.google.com/?q=Purple+Oven+at+Scout+Rallos" target="_blank" rel="noopener noreferrer" class="hover:text-royal-purple hover:underline">Scout Rallos</a>
+                <a href="https://maps.google.com/?q=Purple+Oven+at+San+Juan" target="_blank" rel="noopener noreferrer" class="hover:text-royal-purple hover:underline">San Juan</a>
+                <a href="https://maps.google.com/?q=Purple+Oven+at+San+Antonio" target="_blank" rel="noopener noreferrer" class="hover:text-royal-purple hover:underline">San Antonio</a>
+                <a href="https://maps.google.com/?q=Purple+Oven+at+Legazpi+Village" target="_blank" rel="noopener noreferrer" class="hover:text-royal-purple hover:underline">Legazpi Village</a>
+                <a href="https://maps.google.com/?q=Purple+Oven+at+Alabang" target="_blank" rel="noopener noreferrer" class="hover:text-royal-purple hover:underline">Alabang</a>
+                <a href="https://maps.google.com/?q=Purple+Oven+at+Sacred+Heart" target="_blank" rel="noopener noreferrer" class="hover:text-royal-purple hover:underline">Sacred Heart</a>
+                <a href="https://maps.google.com/?q=Purple+Oven+at+Santa+Rosa+Laguna" target="_blank" rel="noopener noreferrer" class="hover:text-royal-purple hover:underline">Santa Rosa - Laguna</a>
+            </div>
+            
+            <p class="mt-6 text-gray-500 text-xs">
+                © 2025 Purple Oven. All rights reserved. (Placeholder)
+            </p>
+        </div>
+    </footer>
+
+    <script>
+        // Global map variable (required for Google Maps API)
+        let map;
+        let marker;
+        const mapCanvas = document.getElementById('map-canvas');
+
+        // Map data (approximate coordinates)
+        const locationData = {
+            "Temple Drive": { lat: 14.613327, lng: 121.066498 },
+            "Portico": { lat: 14.577909, lng: 121.056070 },
+            "Scout Rallos": { lat: 14.630002, lng: 121.033621 },
+            "San Juan": { lat: 14.606700, lng: 121.031500 },
+            "San Antonio": { lat: 14.549219, lng: 121.018938 },
+            "Legazpi Village": { lat: 14.558360, lng: 121.019488 },
+            "Alabang": { lat: 14.417277, lng: 121.042168 },
+            "Sacred Heart": { lat: 14.633400, lng: 121.034700 },
+            "Santa Rosa - Laguna": { lat: 14.283100, lng: 121.085300 }
+        };
+
+        // --- Inquiry Number Generator Logic (Left as-is) ---
+        const INQUIRY_KEY = 'purpleOvenInquiryCounter';
+
+        function generateInquiryNumber() {
+            const now = new Date();
+            
+            const mm = String(now.getMonth() + 1).padStart(2, '0');
+            const dd = String(now.getDate()).padStart(2, '0');
+            const yy = String(now.getFullYear()).slice(-2);
+            const datePrefix = `${mm}${dd}${yy}`;
+
+            const currentYear = now.getFullYear();
+            let storedData;
+            
+            try {
+                const storedJson = localStorage.getItem(INQUIRY_KEY);
+                storedData = storedJson ? JSON.parse(storedJson) : { year: currentYear, counter: 0 };
+            } catch (e) {
+                console.error("Error parsing inquiry counter from localStorage, resetting.", e);
+                storedData = { year: currentYear, counter: 0 }; 
+            }
+
+            let nextCounter;
+            if (storedData.year !== currentYear) {
+                nextCounter = 1;
+                storedData.year = currentYear;
+            } else {
+                nextCounter = storedData.counter + 1;
+            }
+
+            storedData.counter = nextCounter;
+            localStorage.setItem(INQUIRY_KEY, JSON.stringify(storedData));
+
+            return `${datePrefix}-${nextCounter}`;
+        }
+        
+        // --- NEW: Dynamic Content Rendering Logic ---
+
+        function renderMenuPage() {
+            const container = document.getElementById('menu-content-container');
+            if (!container) return; // Guard clause
+            container.innerHTML = ''; 
+
+            for (const [category, items] of Object.entries(menuData)) {
+                let html = `
+                    <div class="mb-8">
+                        <h3 class="text-2xl font-serif text-royal-purple-dark mb-4">${category}</h3>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                `;
+                
+                items.forEach(item => {
+                    html += `
+                        <div class="bg-white p-4 rounded-lg shadow-md transition-shadow duration-300 hover:shadow-xl">
+                            <h4 class="text-xl font-semibold font-serif text-royal-purple">${item.name}</h4>
+                            <p class="text-gray-600 mt-1">${item.description}</p>
+                            <p class="text-lg font-semibold text-royal-purple-dark mt-2">Price: ${item.price}</p>
+                        </div>
+                    `;
+                });
+
+                html += `</div></div>`;
+                container.innerHTML += html;
+            }
+        }
+
+        function renderOrderAccordion() {
+            const container = document.getElementById('accordion-container');
+            if (!container) return; // Guard clause
+            container.innerHTML = ''; 
+
+            for (const [category, items] of Object.entries(menuData)) {
+                let categoryHtml = `
+                    <div>
+                        <button type="button" class="accordion-trigger w-full flex justify-between items-center p-3 text-left hover:bg-royal-purple-light/30 border-b">
+                            <h5 class="text-md font-semibold text-royal-purple-dark">${category}</h5>
+                            <span class="accordion-arrow text-royal-purple-dark">▼</span>
+                        </button>
+                        <div class="accordion-content hidden p-3 space-y-2 border-b">
+                `;
+                
+                items.forEach(item => {
+                    categoryHtml += `
+                        <div class="flex items-center justify-between pl-2">
+                            <div class="flex items-center">
+                                <input type="checkbox" id="item_${item.id}" name="item_${item.id}" 
+                                       data-item-name="${item.name}" 
+                                       class="h-4 w-4 text-royal-purple rounded border-gray-300 focus:ring-royal-purple">
+                                <label for="item_${item.id}" class="ml-2 text-gray-700">${item.name}</label>
+                            </div>
+                            <input type="number" min="1" value="1" placeholder="Qty" class="w-20 rounded border border-gray-300 p-1 text-sm focus:ring-royal-purple focus:border-royal-purple">
+                        </div>
+                    `;
+                });
+
+                categoryHtml += `</div></div>`;
+                container.innerHTML += categoryHtml;
+            }
+
+            // Re-bind the accordion click handlers after creating the HTML
+            setupAccordionHandlers();
+        }
+
+        function setupAccordionHandlers() {
+            // Function to bind handlers for dynamically created accordion elements
+            const accordionTriggers = document.querySelectorAll('.accordion-trigger');
+            accordionTriggers.forEach(trigger => {
+                // Prevent adding listeners multiple times
+                if (trigger.getAttribute('data-has-listener')) return; 
+
+                trigger.addEventListener('click', () => {
+                    const content = trigger.nextElementSibling;
+                    const parentDiv = trigger.parentElement;
+
+                    if (content.classList.contains('hidden')) {
+                        content.classList.remove('hidden');
+                        parentDiv.classList.add('active-accordion');
+                    } else {
+                        content.classList.add('hidden');
+                        parentDiv.classList.remove('active-accordion');
+                    }
+                });
+                trigger.setAttribute('data-has-listener', 'true');
+            });
+        }
+        
+        // --- Main Document Logic (FIXED & COMPLETED) ---
+
+        function setupEventListeners() {
+            // 1. Page Navigation Logic
+            const navButtons = document.querySelectorAll('.nav-btn');
+            navButtons.forEach(button => {
+                button.addEventListener('click', (e) => {
+                    const targetPageId = 'page-' + e.target.id.split('-')[1];
+                    
+                    // Update active button styles
+                    navButtons.forEach(btn => btn.classList.remove('active-nav'));
+                    e.target.classList.add('active-nav');
+
+                    // Show/hide page sections
+                    document.querySelectorAll('.page').forEach(page => {
+                        page.classList.remove('active');
+                        if (page.id === targetPageId) {
+                            page.classList.add('active');
+                        }
+                    });
+                });
+            });
+
+            // Re-call accordion setup in case event listeners are called first
+            setupAccordionHandlers(); 
+
+            // 2. Order Type (Pick Up / Delivery) Logic
+            const pickupRadio = document.getElementById('pickup');
+            const deliveryRadio = document.getElementById('delivery');
+            const pickupLocationDiv = document.getElementById('pickup-location');
+            const deliveryDetailsDiv = document.getElementById('delivery-details');
+            const locationSelect = document.getElementById('location');
+
+            const handleOrderTypeChange = () => {
+                if (pickupRadio.checked) {
+                    pickupLocationDiv.classList.remove('hidden');
+                    deliveryDetailsDiv.classList.add('hidden');
+                    document.getElementById('map-canvas').classList.add('hidden');
+                    locationSelect.selectedIndex = 0; 
+                } else if (deliveryRadio.checked) {
+                    pickupLocationDiv.classList.add('hidden');
+                    deliveryDetailsDiv.classList.remove('hidden');
+                    document.getElementById('map-canvas').classList.add('hidden');
+                    if (marker) marker.setMap(null); 
+                }
+            };
+
+            pickupRadio.addEventListener('change', handleOrderTypeChange);
+            deliveryRadio.addEventListener('change', handleOrderTypeChange);
+
+            // 3. Pickup Location Map Logic
+            locationSelect.addEventListener('change', (e) => {
+                const selectedOption = e.target.options[e.target.selectedIndex];
+                const lat = selectedOption.getAttribute('data-lat');
+                const lng = selectedOption.getAttribute('data-lng');
+
+                if (lat && lng) {
+                    const pos = { lat: parseFloat(lat), lng: parseFloat(lng) };
+
+                    mapCanvas.classList.remove('hidden');
+                    map.setCenter(pos);
+                    map.setZoom(16);
+
+                    marker.setPosition(pos);
+                    marker.setTitle(selectedOption.value);
+                    marker.setMap(map);
+                } else {
+                    mapCanvas.classList.add('hidden');
+                    if (marker) marker.setMap(null);
+                }
+            });
+            
+            // 4. Send Inquiry Button - Form Submission Logic (Mailto)
+            const orderForm = document.getElementById('order-form');
+            
+            orderForm.addEventListener('submit', function(e) {
+                e.preventDefault(); 
+                
+                // Get Contact Info
+                const email = document.getElementById('email').value;
+                const phone = document.getElementById('phone').value;
+
+                if (!email || !phone) {
+                    alert("Please fill in both Email and Phone Number fields.");
+                    return;
+                }
+
+                const inquiryNumber = generateInquiryNumber();
+                
+                let body = `Hello Purple Oven Team,\n\nI would like to place an advance order inquiry.\n\nInquiry Reference: ${inquiryNumber}\n\n`;
+                body += `Contact Details:\n- Email: ${email}\n- Phone: ${phone}\n`;
+                
+                // Get Order Type & Details
+                const orderType = document.querySelector('input[name="orderType"]:checked');
+                
+                if (orderType) {
+                    body += `\nOrder Type: ${orderType.value.charAt(0).toUpperCase() + orderType.value.slice(1)}\n`;
+                    
+                    if (orderType.value === 'pickup') {
+                        const selectedLocation = locationSelect.options[locationSelect.selectedIndex];
+                        const locationName = selectedLocation.value || 'Not Selected';
+                        body += `Pick Up Location: ${locationName}\n`;
+                    } else if (orderType.value === 'delivery') {
+                        const address = document.getElementById('address').value;
+                        const landmark = document.getElementById('landmark').value;
+                        body += `Delivery Address: ${address || 'Not Provided'}\n`;
+                        body += `Delivery Landmark: ${landmark || 'Not Provided'}\n`;
+                    }
+                } else {
+                     body += `\nOrder Type: NOT SELECTED (Please specify Pick Up or Delivery)\n`;
+                }
+                
+                // Get Selected Items
+                const selectedItems = [];
+                document.querySelectorAll('#accordion-container input[type="checkbox"]:checked').forEach(checkbox => {
+                    const itemLabel = checkbox.getAttribute('data-item-name');
+                    const qtyInput = checkbox.closest('.flex').querySelector('input[type="number"]');
+                    const quantity = qtyInput ? qtyInput.value : '1';
+                    
+                    selectedItems.push(`- ${itemLabel} (Qty: ${quantity})`);
+                });
+                
+                if (selectedItems.length > 0) {
+                    body += `\nRequested Items:\n${selectedItems.join('\n')}\n`;
+                } else {
+                    body += `\nNOTE: No specific items were selected in the form.\n`;
+                }
+                
+                body += `\n\n--- End of Inquiry ---\n(Our team will reply to confirm your order and total cost.)`;
+                
+                // Create and Open Mailto Link
+                const toEmail = 'orderonline@purpleoven.com.ph';
+                const subject = `New Advance Order Inquiry - Ref: ${inquiryNumber}`;
+                
+                const mailtoLink = `mailto:${toEmail}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+                
+                window.location.href = mailtoLink;
+                
+                orderForm.reset(); 
+            });
+        }
+        
+        // Initialize Map function (required by Google Maps API script tag)
+        function initMap() {
+            // Initialize map centered at a default location (e.g., Metro Manila)
+            const defaultLocation = { lat: 14.584, lng: 121.05 };
+            map = new google.maps.Map(mapCanvas, {
+                center: defaultLocation,
+                zoom: 10,
+                mapTypeId: google.maps.MapTypeId.ROADMAP
+            });
+            // Marker initialized but hidden until a location is selected
+            marker = new google.maps.Marker({
+                map: map
+            });
+            
+            // --- NEW: CALL RENDER FUNCTIONS HERE ---
+            renderMenuPage();
+            renderOrderAccordion();
+            
+            // Call the main event listeners setup
+            setupEventListeners(); 
+        }
+    </script>
+</body>
+</html>
