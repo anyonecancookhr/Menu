@@ -38,7 +38,7 @@
         }
         /* Style for the active navigation button */
         .nav-btn.active-nav {
-            background-color: #4A067A;
+            background-color: '#4A067A';
             font-weight: 700;
             box-shadow: inset 0 2px 4px rgba(0,0,0,0.2);
         }
@@ -76,15 +76,22 @@
         }
     </style>
     
-    <script src="data/menu.js"></script>
-    <script src="https://maps.googleapis.com/maps/api/js?callback=initMap" async defer></script>
+    <!-- IMPORTANT: Load external data file (menu.js) -->
+    <!-- This file MUST be named menu.js for the code to work -->
+    <script src="menu.js"></script>
+    <!-- 
+        Map script loads asynchronously. It will call the global initializeMap() function 
+        if it loads successfully. If it fails, the app still loads via the window.onload handler below.
+    -->
+    <script src="https://maps.googleapis.com/maps/api/js?callback=initializeMap" async defer></script>
 </head>
 <body class="bg-royal-purple-light font-sans text-gray-800 min-h-screen">
 
     <header class="bg-royal-purple text-white p-6 shadow-lg sticky top-0 z-10">
         <div class="container mx-auto max-w-5xl">
             <div class="text-center md:text-left">
-                <img src="purple_oven_logo.jpg" alt="Purple Oven Logo" class="h-20 w-auto mx-auto md:mx-0 mb-2 rounded-full">
+                <!-- Placeholder image, replace with actual logo URL -->
+                <img src="https://placehold.co/80x80/5A1B6B/FFFFFF?text=Logo" alt="Purple Oven Logo" class="h-20 w-auto mx-auto md:mx-0 mb-2 rounded-full">
                 <h1 class="text-4xl font-serif font-bold">Purple Oven</h1>
                 </div>
             
@@ -100,8 +107,10 @@
         <section id="page-menu" class="page active">
             <h2 class="text-3xl font-serif font-bold text-royal-purple-text mb-6 pb-2 border-b-2 border-royal-purple/30">Our Menu</h2>
             
+            <!-- Menu items are dynamically generated here -->
             <div id="menu-content-container">
-                </div>
+                <!-- Dynamic content will be injected here -->
+            </div>
         </section>
 
         <section id="page-orders" class="page">
@@ -135,11 +144,15 @@
                             <input type="tel" id="phone" placeholder="09171234567" required class="w-full rounded border border-gray-300 p-2 focus:ring-royal-purple focus:border-royal-purple">
                         </div>
 
+                        <!-- Accordion for Item Selection - Dynamically Generated -->
                         <div class="mb-4">
                             <label class="block text-sm font-bold text-gray-700 mb-2">Select Items:</label>
                             <div id="accordion-container" class="border rounded-lg overflow-hidden bg-white shadow-sm">
-                                </div>
+                                <!-- Accordions are dynamically generated here -->
+                            </div>
                         </div>
+                        <!-- End Dynamic Accordion -->
+
                         <div class="mb-4">
                             <label class="block text-sm font-bold text-gray-700 mb-2">Order Type:</label>
                             <div class="flex space-x-4">
@@ -169,6 +182,7 @@
                                 <option data-lat="14.283100" data-lng="121.085300" value="Santa Rosa - Laguna">Purple Oven at Santa Rosa - Laguna</option>
                             </select>
                             
+                            <!-- Map will only be initialized here if Google Maps script loads successfully -->
                             <div id="map-canvas" class="map-container hidden"></div>
                         </div>
                         
@@ -238,7 +252,7 @@
             "Santa Rosa - Laguna": { lat: 14.283100, lng: 121.085300 }
         };
 
-        // --- Inquiry Number Generator Logic (Left as-is) ---
+        // --- Inquiry Number Generator Logic ---
         const INQUIRY_KEY = 'purpleOvenInquiryCounter';
 
         function generateInquiryNumber() {
@@ -254,6 +268,7 @@
             
             try {
                 const storedJson = localStorage.getItem(INQUIRY_KEY);
+                // Check if menuData is available (must be loaded by menu.js first)
                 storedData = storedJson ? JSON.parse(storedJson) : { year: currentYear, counter: 0 };
             } catch (e) {
                 console.error("Error parsing inquiry counter from localStorage, resetting.", e);
@@ -274,13 +289,14 @@
             return `${datePrefix}-${nextCounter}`;
         }
         
-        // --- NEW: Dynamic Content Rendering Logic ---
+        // --- Dynamic Content Rendering Logic ---
 
         function renderMenuPage() {
             const container = document.getElementById('menu-content-container');
-            if (!container) return; // Guard clause
+            if (!container) return; // Safety check
             container.innerHTML = ''; 
 
+            // Loop through categories defined in menuData (from menu.js)
             for (const [category, items] of Object.entries(menuData)) {
                 let html = `
                     <div class="mb-8">
@@ -305,9 +321,10 @@
 
         function renderOrderAccordion() {
             const container = document.getElementById('accordion-container');
-            if (!container) return; // Guard clause
+            if (!container) return; // Safety check
             container.innerHTML = ''; 
 
+            // Loop through categories defined in menuData (from menu.js)
             for (const [category, items] of Object.entries(menuData)) {
                 let categoryHtml = `
                     <div>
@@ -363,7 +380,7 @@
             });
         }
         
-        // --- Main Document Logic (FIXED & COMPLETED) ---
+        // --- Main Document Logic ---
 
         function setupEventListeners() {
             // 1. Page Navigation Logic
@@ -402,6 +419,10 @@
                     deliveryDetailsDiv.classList.add('hidden');
                     document.getElementById('map-canvas').classList.add('hidden');
                     locationSelect.selectedIndex = 0; 
+                    // Attempt to initialize map if not yet done (in case it failed on first try)
+                    if (typeof google !== 'undefined' && typeof google.maps !== 'undefined' && typeof map === 'undefined') {
+                        initializeMap();
+                    }
                 } else if (deliveryRadio.checked) {
                     pickupLocationDiv.classList.add('hidden');
                     deliveryDetailsDiv.classList.remove('hidden');
@@ -415,6 +436,12 @@
 
             // 3. Pickup Location Map Logic
             locationSelect.addEventListener('change', (e) => {
+                if (typeof map === 'undefined' || typeof google === 'undefined') {
+                    console.warn("Google Maps is not initialized. Cannot display map.");
+                    mapCanvas.classList.add('hidden');
+                    return; 
+                }
+
                 const selectedOption = e.target.options[e.target.selectedIndex];
                 const lat = selectedOption.getAttribute('data-lat');
                 const lng = selectedOption.getAttribute('data-lng');
@@ -446,7 +473,8 @@
                 const phone = document.getElementById('phone').value;
 
                 if (!email || !phone) {
-                    alert("Please fill in both Email and Phone Number fields.");
+                    // Using console.error instead of alert() per instructions
+                    console.error("Please fill in both Email and Phone Number fields.");
                     return;
                 }
 
@@ -478,7 +506,9 @@
                 // Get Selected Items
                 const selectedItems = [];
                 document.querySelectorAll('#accordion-container input[type="checkbox"]:checked').forEach(checkbox => {
+                    // Extract item name using the data attribute (the fix)
                     const itemLabel = checkbox.getAttribute('data-item-name');
+                    
                     const qtyInput = checkbox.closest('.flex').querySelector('input[type="number"]');
                     const quantity = qtyInput ? qtyInput.value : '1';
                     
@@ -499,14 +529,22 @@
                 
                 const mailtoLink = `mailto:${toEmail}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
                 
+                // Triggers the mail client
                 window.location.href = mailtoLink;
                 
+                // Reset the form after submitting the mailto link
                 orderForm.reset(); 
             });
         }
         
-        // Initialize Map function (required by Google Maps API script tag)
-        function initMap() {
+        // --- New Function: Initialize Map only ---
+        function initializeMap() {
+            // Check if Google Maps API is available
+            if (typeof google === 'undefined' || typeof google.maps === 'undefined' || typeof mapCanvas === 'undefined') {
+                console.warn("Google Maps API not fully loaded. Map feature disabled.");
+                return;
+            }
+
             // Initialize map centered at a default location (e.g., Metro Manila)
             const defaultLocation = { lat: 14.584, lng: 121.05 };
             map = new google.maps.Map(mapCanvas, {
@@ -518,14 +556,31 @@
             marker = new google.maps.Marker({
                 map: map
             });
-            
-            // --- NEW: CALL RENDER FUNCTIONS HERE ---
-            renderMenuPage();
-            renderOrderAccordion();
-            
+            console.log("Google Map initialized successfully.");
+        }
+
+        // --- Core Application Entry Point ---
+        function initializeApplication() {
+            // Render content using the data from menu.js
+            if (typeof menuData !== 'undefined') {
+                renderMenuPage();
+                renderOrderAccordion();
+            } else {
+                console.error("Error: menuData is not defined. Ensure menu.js is loaded correctly.");
+            }
+
             // Call the main event listeners setup
             setupEventListeners(); 
+
+            // If Google Maps loaded via the script tag (and called initializeMap), it's already running.
+            // If it hasn't, we can try to call initializeMap manually if the 'google' object is defined.
+            // However, the script tag with 'callback=initializeMap' is the best practice. 
+            // We rely on it, but the app starts regardless!
         }
+
+        // IMPORTANT: Start the application logic once the DOM is ready, 
+        // independent of the external Google Maps script.
+        window.onload = initializeApplication;
     </script>
 </body>
 </html>
