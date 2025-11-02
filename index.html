@@ -125,6 +125,17 @@
                     <p class="text-gray-700 mb-4">Fill out the form below to send us an order inquiry. We will contact you to confirm details.</p>
                     
                     <form id="order-form">
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div class="mb-4">
+                                <label for="dateNeeded" class="block text-sm font-bold text-gray-700 mb-2">Date Needed:</label>
+                                <input type="date" id="dateNeeded" required class="w-full rounded border border-gray-300 p-2 focus:ring-royal-purple focus:border-royal-purple">
+                            </div>
+                            <div class="mb-4">
+                                <label for="timeNeeded" class="block text-sm font-bold text-gray-700 mb-2">Time Needed:</label>
+                                <input type="time" id="timeNeeded" required class="w-full rounded border border-gray-300 p-2 focus:ring-royal-purple focus:border-royal-purple">
+                            </div>
+                        </div>
+
                         <div class="mb-4">
                             <label for="email" class="block text-sm font-bold text-gray-700 mb-2">Email:</label>
                             <input type="email" id="email" placeholder="you@example.com" required class="w-full rounded border border-gray-300 p-2 focus:ring-royal-purple focus:border-royal-purple">
@@ -213,7 +224,7 @@
             </div>
             
             <p class="mt-6 text-gray-500 text-xs">
-                © 2025 Purple Oven. All rights reserved.
+                © 2025 Purple Oven. All rights reserved. (Placeholder)
             </p>
         </div>
     </footer>
@@ -460,19 +471,21 @@
             orderForm.addEventListener('submit', function(e) {
                 e.preventDefault(); 
                 
-                // Get Contact Info
+                // Get Date/Time and Contact Info
+                const dateNeeded = document.getElementById('dateNeeded').value;
+                const timeNeeded = document.getElementById('timeNeeded').value;
                 const email = document.getElementById('email').value;
                 const phone = document.getElementById('phone').value;
 
-                if (!email || !phone) {
-                    // Using console.error instead of alert() per instructions
-                    console.error("Please fill in both Email and Phone Number fields.");
+                if (!email || !phone || !dateNeeded || !timeNeeded) {
+                    console.error("Please fill in all contact and scheduling fields.");
                     return;
                 }
 
                 const inquiryNumber = generateInquiryNumber();
                 
                 let body = `Hello Purple Oven Team,\n\nI would like to place an advance order inquiry.\n\nInquiry Reference: ${inquiryNumber}\n\n`;
+                body += `Requested Schedule:\n- Date: ${dateNeeded}\n- Time: ${timeNeeded}\n`; // Added schedule
                 body += `Contact Details:\n- Email: ${email}\n- Phone: ${phone}\n`;
                 
                 // Get Order Type & Details
