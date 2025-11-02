@@ -1,21 +1,28 @@
-// menu.js
-
-// This object holds all product categories and items.
+/**
+ * menuData: Defines the entire product list, categorized for display on 
+ * the Menu page and for selection on the Advance Orders form.
+ * * Each item requires:
+ * - id: A unique identifier (used for form submission).
+ * - name: The product title.
+ * - description: A brief description.
+ * - price: The displayed price (string format).
+ */
 const menuData = {
-    'Light Cakes': [
-        { name: "Yema Cake", description: "Fluffy sponge cake topped with creamy yema frosting.", price: "₱650.00", id: "light_yema" },
-        { name: "Lemon Drizzle", description: "Zesty lemon cake with a light sugar glaze.", price: "₱580.00", id: "light_lemon" }
+    "Cakes and Cheesecakes": [
+        { id: "c1", name: "Revel Bar Cake", description: "Layers of our famous revel bars baked into a soft cake.", price: "₱ 950.00" },
+        { id: "c2", name: "Chocolate Dome Cake", description: "Rich chocolate mousse over a moist chocolate sponge.", price: "₱ 1,100.00" },
+        { id: "c3", name: "Lemon Cheesecake", description: "Tart and creamy lemon cheesecake on a graham crust.", price: "₱ 850.00" },
+        { id: "c4", name: "Carrot Walnut Cake", description: "Moist carrot cake with cream cheese frosting and walnuts.", price: "₱ 980.00" }
     ],
-    'Chocolate Cakes': [
-        { name: "Triple Chocolate Fudge", description: "Dense chocolate cake with layers of ganache.", price: "₱850.00", id: "choco_fudge" },
-        { name: "Dark Chocolate Mousse", description: "Light chocolate mousse on a brownie base.", price: "₱790.00", id: "choco_mousse" }
+    "Baked Goods & Bars": [
+        { id: "b1", name: "Classic Revel Bar", description: "Our signature oatmeal cookie bars with chocolate chips.", price: "₱ 45.00/pc" },
+        { id: "b2", name: "Fudge Brownies", description: "Dense, rich, and chewy chocolate fudge brownies.", price: "₱ 55.00/pc" },
+        { id: "b3", name: "Food for the Gods", description: "Date and walnut bars, a classic Filipino favorite.", price: "₱ 60.00/pc" },
+        { id: "b4", name: "Apple Crumble", description: "Sweet and tangy baked apple filling topped with oat crumble.", price: "₱ 750.00" }
     ],
-    'Bread': [
-        { name: "Ensaymada (Box of 6)", description: "Soft, cheesy, and buttery Filipino brioche.", price: "₱390.00", id: "bread_ensaymada" },
-        { name: "Cheese Rolls (Box of 8)", description: "Classic soft bread with a savory cheese filling.", price: "₱350.00", id: "bread_cheeseroll" }
-    ],
-    'Pies': [
-        { name: "Apple Crumble Pie", description: "Sweet and tart apple filling with a buttery crumble top.", price: "₱590.00", id: "pie_apple" },
-        { name: "Buko Pie", description: "Creamy young coconut meat baked in a flaky crust.", price: "₱550.00", id: "pie_buko" }
+    "Savory Items": [
+        { id: "s1", name: "Tuna Melt Sandwich", description: "Classic tuna salad with melted cheese on toasted sourdough.", price: "₱ 180.00" },
+        { id: "s2", name: "Pesto Pasta Salad", description: "Penne pasta tossed in a creamy basil pesto sauce.", price: "₱ 250.00" },
+        { id: "s3", name: "Sausage Rolls (6 pcs)", description: "Flaky pastry wrapped around savory seasoned pork sausage.", price: "₱ 320.00" }
     ]
 };
