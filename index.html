@@ -1,4 +1,3 @@
-<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -76,7 +75,13 @@
         }
     </style>
     
+    <!-- IMPORTANT: Load external data file (menu.js) -->
+    <!-- This file MUST be named menu.js for the code to work -->
     <script src="menu.js"></script>
+    <!-- 
+        Map script loads asynchronously. It will call the global initializeMap() function 
+        if it loads successfully. If it fails, the app still loads via the window.onload handler below.
+    -->
     <script src="https://maps.googleapis.com/maps/api/js?callback=initializeMap" async defer></script>
 </head>
 <body class="bg-royal-purple-light font-sans text-gray-800 min-h-screen">
@@ -84,6 +89,7 @@
     <header class="bg-royal-purple text-white p-6 shadow-lg sticky top-0 z-10">
         <div class="container mx-auto max-w-5xl">
             <div class="text-center md:text-left">
+                <!-- LOGO: Referencing your uploaded file -->
                 <img src="purple_oven_logo.jpg" alt="Purple Oven Logo" class="h-20 w-auto mx-auto mb-2 rounded-full shadow-md">
                 </div>
             
@@ -99,8 +105,10 @@
         <section id="page-menu" class="page active">
             <h2 class="text-3xl font-serif font-bold text-royal-purple-text mb-6 pb-2 border-b-2 border-royal-purple/30">Our Menu</h2>
             
+            <!-- Menu items are dynamically generated here -->
             <div id="menu-content-container">
-                </div>
+                <!-- Dynamic content will be injected here -->
+            </div>
         </section>
 
         <section id="page-orders" class="page">
@@ -108,15 +116,17 @@
 
             <div class="bg-white p-6 rounded-lg shadow-md mb-6 border-l-4 border-royal-purple">
                 <h3 class="text-2xl font-serif font-semibold text-royal-purple-dark">Office Hours</h3>
-                <p class="text-lg text-gray-700 mt-2">Our team is available to confirm your advance orders daily from <span class="font-bold">8:00 AM to 7:00 PM</span>.</p>
+                <!-- UPDATED OFFICE HOURS TO 8:00 AM to 9:00 PM -->
+                <p class="text-lg text-gray-700 mt-2">Our team is available to confirm your advance orders daily from <span class="font-bold">8:00 AM to 9:00 PM</span>.</p>
             </div>
 
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div class="bg-white p-6 rounded-lg shadow-md">
                     <h3 class="text-2xl font-serif font-semibold text-royal-purple-dark mb-3">Option 1: Call Us</h3>
                     <p class="text-gray-700 mb-4">For immediate assistance or to discuss your order, please give us a call.</p>
-                    <a href="#" class="inline-block bg-royal-purple text-white font-bold py-2 px-5 rounded-lg transition-transform duration-200 hover:scale-105">
-                        Call: (Phone Number Here)
+                    <!-- Phone Number -->
+                    <a href="tel:86314221" class="inline-block bg-royal-purple text-white font-bold py-2 px-5 rounded-lg transition-transform duration-200 hover:scale-105">
+                        Call: 8631-4221
                     </a>
                 </div>
 
@@ -125,6 +135,12 @@
                     <p class="text-gray-700 mb-4">Fill out the form below to send us an order inquiry. We will contact you to confirm details.</p>
                     
                     <form id="order-form">
+                        <!-- Full Name Field -->
+                        <div class="mb-4">
+                            <label for="name" class="block text-sm font-bold text-gray-700 mb-2">Full Name:</label>
+                            <input type="text" id="name" placeholder="Your Full Name" required class="w-full rounded border border-gray-300 p-2 focus:ring-royal-purple focus:border-royal-purple">
+                        </div>
+
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                             <div class="mb-4">
                                 <label for="dateNeeded" class="block text-sm font-bold text-gray-700 mb-2">Date Needed:</label>
@@ -132,6 +148,7 @@
                             </div>
                             <div class="mb-4">
                                 <label for="timeNeeded" class="block text-sm font-bold text-gray-700 mb-2">Time Needed:</label>
+                                <!-- min/max are dynamically set by JS based on Pick Up/Delivery choice -->
                                 <input type="time" id="timeNeeded" required class="w-full rounded border border-gray-300 p-2 focus:ring-royal-purple focus:border-royal-purple">
                             </div>
                         </div>
@@ -145,21 +162,27 @@
                             <input type="tel" id="phone" placeholder="09171234567" required class="w-full rounded border border-gray-300 p-2 focus:ring-royal-purple focus:border-royal-purple">
                         </div>
 
+                        <!-- Accordion for Item Selection - Dynamically Generated -->
                         <div class="mb-4">
                             <label class="block text-sm font-bold text-gray-700 mb-2">Select Items:</label>
                             <div id="accordion-container" class="border rounded-lg overflow-hidden bg-white shadow-sm">
-                                </div>
+                                <!-- Accordions are dynamically generated here -->
+                            </div>
                         </div>
+                        <!-- End Dynamic Accordion -->
+
                         <div class="mb-4">
                             <label class="block text-sm font-bold text-gray-700 mb-2">Order Type:</label>
                             <div class="flex space-x-4">
                                 <div class="flex items-center">
+                                    <!-- UPDATED LABEL for Pick Up -->
                                     <input type="radio" name="orderType" id="pickup" value="pickup" class="h-4 w-4 text-royal-purple focus:ring-royal-purple">
-                                    <label for="pickup" class="ml-2 text-gray-700">Pick Up</label>
+                                    <label for="pickup" class="ml-2 text-gray-700">Pick Up (8:00 AM - 9:00 PM)</label>
                                 </div>
                                 <div class="flex items-center">
+                                    <!-- UPDATED LABEL for Delivery -->
                                     <input type="radio" name="orderType" id="delivery" value="delivery" class="h-4 w-4 text-royal-purple focus:ring-royal-purple">
-                                    <label for="delivery" class="ml-2 text-gray-700">Delivery</label>
+                                    <label for="delivery" class="ml-2 text-gray-700">Delivery (9:00 AM - 9:00 PM)</label>
                                 </div>
                             </div>
                         </div>
@@ -179,6 +202,7 @@
                                 <option data-lat="14.283100" data-lng="121.085300" value="Santa Rosa - Laguna">Purple Oven at Santa Rosa - Laguna</option>
                             </select>
                             
+                            <!-- Map will only be initialized here if Google Maps script loads successfully -->
                             <div id="map-canvas" class="map-container hidden"></div>
                         </div>
                         
@@ -224,7 +248,7 @@
             </div>
             
             <p class="mt-6 text-gray-500 text-xs">
-                © 2025 Purple Oven. All rights reserved.
+                © 2025 Purple Oven. All rights reserved. (Placeholder)
             </p>
         </div>
     </footer>
@@ -415,6 +439,7 @@
             const pickupLocationDiv = document.getElementById('pickup-location');
             const deliveryDetailsDiv = document.getElementById('delivery-details');
             const locationSelect = document.getElementById('location');
+            const timeNeededInput = document.getElementById('timeNeeded'); // Time input reference
 
             const handleOrderTypeChange = () => {
                 if (pickupRadio.checked) {
@@ -422,7 +447,11 @@
                     deliveryDetailsDiv.classList.add('hidden');
                     document.getElementById('map-canvas').classList.add('hidden');
                     locationSelect.selectedIndex = 0; 
-                    // Attempt to initialize map if not yet done (in case it failed on first try)
+                    
+                    // Set Pick Up Time Range: 8:00 AM (08:00) to 9:00 PM (21:00)
+                    timeNeededInput.min = '08:00';
+                    timeNeededInput.max = '21:00'; // Updated to 9:00 PM
+
                     if (typeof google !== 'undefined' && typeof google.maps !== 'undefined' && typeof map === 'undefined') {
                         initializeMap();
                     }
@@ -431,6 +460,10 @@
                     deliveryDetailsDiv.classList.remove('hidden');
                     document.getElementById('map-canvas').classList.add('hidden');
                     if (marker) marker.setMap(null); 
+                    
+                    // Set Delivery Time Range: 9:00 AM (09:00) to 9:00 PM (21:00)
+                    timeNeededInput.min = '09:00';
+                    timeNeededInput.max = '21:00'; // Updated to 9:00 PM
                 }
             };
 
@@ -471,25 +504,35 @@
             orderForm.addEventListener('submit', function(e) {
                 e.preventDefault(); 
                 
-                // Get Date/Time and Contact Info
+                // Get Name, Date/Time and Contact Info
+                const name = document.getElementById('name').value; 
                 const dateNeeded = document.getElementById('dateNeeded').value;
                 const timeNeeded = document.getElementById('timeNeeded').value;
                 const email = document.getElementById('email').value;
                 const phone = document.getElementById('phone').value;
+                const orderType = document.querySelector('input[name="orderType"]:checked');
 
-                if (!email || !phone || !dateNeeded || !timeNeeded) {
-                    console.error("Please fill in all contact and scheduling fields.");
+                if (!name || !email || !phone || !dateNeeded || !timeNeeded || !orderType) {
+                    console.error("Please fill in all required contact, scheduling, and order type fields.");
                     return;
+                }
+
+                // Check time against the dynamically set min/max constraints (browser validation handles this but good for JS fallback)
+                const minTime = timeNeededInput.min;
+                const maxTime = timeNeededInput.max;
+                if (timeNeeded < minTime || timeNeeded > maxTime) {
+                    // Note: This message is helpful for debugging but the browser typically handles range checks
+                    console.error(`Selected time (${timeNeeded}) is outside the acceptable range for ${orderType.value}: ${minTime} to ${maxTime}.`);
+                    // Don't halt the flow if using mailto, as the browser's required attribute handles the primary validation.
                 }
 
                 const inquiryNumber = generateInquiryNumber();
                 
                 let body = `Hello Purple Oven Team,\n\nI would like to place an advance order inquiry.\n\nInquiry Reference: ${inquiryNumber}\n\n`;
-                body += `Requested Schedule:\n- Date: ${dateNeeded}\n- Time: ${timeNeeded}\n`; // Added schedule
-                body += `Contact Details:\n- Email: ${email}\n- Phone: ${phone}\n`;
+                body += `Requested Schedule:\n- Date: ${dateNeeded}\n- Time: ${timeNeeded}\n`; 
+                body += `Contact Details:\n- Name: ${name}\n- Email: ${email}\n- Phone: ${phone}\n`; 
                 
                 // Get Order Type & Details
-                const orderType = document.querySelector('input[name="orderType"]:checked');
                 
                 if (orderType) {
                     body += `\nOrder Type: ${orderType.value.charAt(0).toUpperCase() + orderType.value.slice(1)}\n`;
@@ -511,7 +554,7 @@
                 // Get Selected Items
                 const selectedItems = [];
                 document.querySelectorAll('#accordion-container input[type="checkbox"]:checked').forEach(checkbox => {
-                    // Extract item name using the data attribute (the fix)
+                    // Extract item name using the data attribute 
                     const itemLabel = checkbox.getAttribute('data-item-name');
                     
                     const qtyInput = checkbox.closest('.flex').querySelector('input[type="number"]');
@@ -584,4 +627,3 @@
     </script>
 </body>
 </html>
-
