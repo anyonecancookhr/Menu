@@ -1,3 +1,4 @@
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -116,8 +117,8 @@
 
             <div class="bg-white p-6 rounded-lg shadow-md mb-6 border-l-4 border-royal-purple">
                 <h3 class="text-2xl font-serif font-semibold text-royal-purple-dark">Office Hours</h3>
-                <!-- UPDATED OFFICE HOURS TO 8:00 AM to 9:00 PM -->
-                <p class="text-lg text-gray-700 mt-2">Our team is available to confirm your advance orders daily from <span class="font-bold">8:00 AM to 9:00 PM</span>.</p>
+                <!-- UPDATED OFFICE HOURS TO 8:00 AM to 7:00 PM -->
+                <p class="text-lg text-gray-700 mt-2">Our team is available to confirm your advance orders daily from <span class="font-bold">8:00 AM to 7:00 PM</span>.</p>
             </div>
 
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -175,14 +176,14 @@
                             <label class="block text-sm font-bold text-gray-700 mb-2">Order Type:</label>
                             <div class="flex space-x-4">
                                 <div class="flex items-center">
-                                    <!-- UPDATED LABEL for Pick Up -->
+                                    <!-- UPDATED LABEL for Pick Up to 8:45 PM -->
                                     <input type="radio" name="orderType" id="pickup" value="pickup" class="h-4 w-4 text-royal-purple focus:ring-royal-purple">
-                                    <label for="pickup" class="ml-2 text-gray-700">Pick Up (8:00 AM - 9:00 PM)</label>
+                                    <label for="pickup" class="ml-2 text-gray-700">Pick Up (8:00 AM - 8:45 PM)</label>
                                 </div>
                                 <div class="flex items-center">
-                                    <!-- UPDATED LABEL for Delivery -->
+                                    <!-- UPDATED LABEL for Delivery to 8:45 PM -->
                                     <input type="radio" name="orderType" id="delivery" value="delivery" class="h-4 w-4 text-royal-purple focus:ring-royal-purple">
-                                    <label for="delivery" class="ml-2 text-gray-700">Delivery (9:00 AM - 9:00 PM)</label>
+                                    <label for="delivery" class="ml-2 text-gray-700">Delivery (9:00 AM - 8:45 PM)</label>
                                 </div>
                             </div>
                         </div>
@@ -448,9 +449,9 @@
                     document.getElementById('map-canvas').classList.add('hidden');
                     locationSelect.selectedIndex = 0; 
                     
-                    // Set Pick Up Time Range: 8:00 AM (08:00) to 9:00 PM (21:00)
+                    // Set Pick Up Time Range: 8:00 AM (08:00) to 8:45 PM (20:45)
                     timeNeededInput.min = '08:00';
-                    timeNeededInput.max = '21:00'; // Updated to 9:00 PM
+                    timeNeededInput.max = '20:45'; // Set max time constraint to 8:45 PM (20:45)
 
                     if (typeof google !== 'undefined' && typeof google.maps !== 'undefined' && typeof map === 'undefined') {
                         initializeMap();
@@ -461,9 +462,9 @@
                     document.getElementById('map-canvas').classList.add('hidden');
                     if (marker) marker.setMap(null); 
                     
-                    // Set Delivery Time Range: 9:00 AM (09:00) to 9:00 PM (21:00)
+                    // Set Delivery Time Range: 9:00 AM (09:00) to 8:45 PM (20:45)
                     timeNeededInput.min = '09:00';
-                    timeNeededInput.max = '21:00'; // Updated to 9:00 PM
+                    timeNeededInput.max = '20:45'; // Set max time constraint to 8:45 PM (20:45)
                 }
             };
 
@@ -572,7 +573,7 @@
                 body += `\n\n--- End of Inquiry ---\n(Our team will reply to confirm your order and total cost.)`;
                 
                 // Create and Open Mailto Link
-                const toEmail = 'orderonline@purpleoven.com.ph';
+                const toEmail = 'hrpurpleoven2@gmail.com';
                 const subject = `New Advance Order Inquiry - Ref: ${inquiryNumber}`;
                 
                 const mailtoLink = `mailto:${toEmail}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
@@ -627,3 +628,4 @@
     </script>
 </body>
 </html>
+
